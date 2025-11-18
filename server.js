@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 dotenv.config();
 
@@ -10,6 +10,11 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(express.static("public"));
+
+// LOAD LOGIN PAGE ON ROOT URL
+app.get("/", (req, res) => {
+  res.sendFile("public/login.html", { root: "." });
+});
 
 // Student Schema with courses array
 const StudentSchema = new mongoose.Schema({
