@@ -1,40 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>University Portal</title>
+  <title>KLE University | Dashboard</title>
   <link rel="stylesheet" href="portal.css">
+
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body>
+<body class="portal-bg">
 
 <div class="wrapper">
 
-  <!-- SIDEBAR -->
   <div class="sidebar">
-    <h2>University Portal</h2>
+    <h2>KLE Technological University</h2>
     <ul>
-      <li class="active">Dashboard</li>
-      <li>Courses</li>
-      <li>My Courses</li>
-      <li>Schedule</li>
-      <li>Grades</li>
-      <li>Settings</li>
+      <li onclick="go('home.html')" class="active">
+        <i class="fa fa-gauge"></i> Dashboard
+      </li>
+      <li onclick="go('courses.html')">
+        <i class="fa fa-book"></i> Courses
+      </li>
+      <li onclick="go('mycourses.html')">
+        <i class="fa fa-list-check"></i> My Courses
+      </li>
+      <li onclick="go('schedule.html')">
+        <i class="fa fa-calendar-days"></i> Schedule
+      </li>
+      <li onclick="go('grades.html')">
+        <i class="fa fa-graduation-cap"></i> Grades
+      </li>
+      <li onclick="go('settings.html')">
+        <i class="fa fa-gear"></i> Settings
+      </li>
     </ul>
   </div>
 
-  <!-- MAIN CONTENT -->
   <div class="main">
-    <div class="topbar">
-      <input type="text" class="search" placeholder="Search for...">
-      <div class="user-profile">👤</div>
-    </div>
 
-    <h2>Welcome back, <span id="studentName"></span></h2>
+    <div class="header-top">
+      <h2>
+        <i class="fa fa-user-circle"></i>
+        Welcome, <span id="studentName"></span>
+      </h2>
+
+      <button onclick="logout()" class="logout-btn-big">LOGOUT</button>
+    </div>
 
     <div class="cards">
       <div class="card">Registered Courses <h3 id="regCount">0</h3></div>
-      <div class="card">Total Credits <h3 id="credits">0</h3></div>
-      <div class="card">Enrollment Progress <h3 id="progress">0%</h3></div>
-      <div class="card">Upcoming Classes <h3 id="upcoming">0</h3></div>
+      <div class="card">Total Credits <h3>12</h3></div>
+      <div class="card">Progress <h3>45%</h3></div>
+      <div class="card">Upcoming Classes <h3>3</h3></div>
     </div>
 
     <h3>Available Courses</h3>
@@ -45,15 +61,12 @@
           <th>Code</th>
           <th>Title</th>
           <th>Instructor</th>
-          <th>Schedule</th>
           <th>Credits</th>
           <th>Availability</th>
-          <th>Actions</th>
+          <th>Action</th>
         </tr>
       </thead>
-      <tbody id="courseList">
-        <!-- Dynamic Data -->
-      </tbody>
+      <tbody id="courseList"></tbody>
     </table>
 
   </div>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Courses</title>
+  <link rel="stylesheet" href="portal.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="portal-bg">
+
+<div class="wrapper">
+
+  <div class="sidebar">
+    <h2>KLE Technological University</h2>
+    <ul>
+      <li onclick="go('home.html')"><i class="fa fa-gauge"></i> Dashboard</li>
+      <li onclick="go('courses.html')"><i class="fa fa-book"></i> Courses</li>
+      <li onclick="go('mycourses.html')" class="active"><i class="fa fa-list-check"></i> My Courses</li>
+      <li onclick="go('schedule.html')"><i class="fa fa-calendar-days"></i> Schedule</li>
+      <li onclick="go('grades.html')"><i class="fa fa-graduation-cap"></i> Grades</li>
+      <li onclick="go('settings.html')"><i class="fa fa-gear"></i> Settings</li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <h2>My Registered Courses</h2>
+
+    <table class="courses">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Title</th>
+          <th>Instructor</th>
+          <th>Credits</th>
+        </tr>
+      </thead>
+
+      <tbody id="myList"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  const student = JSON.parse(localStorage.getItem("student"));
+
+  fetch("/my-courses", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email: student.email })
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("myList").innerHTML = data.map(c => `
+      <tr>
+        <td>${c.code}</td>
+        <td>${c.title}</td>
+        <td>${c.instructor}</td>
+        <td>${c.credits}</td>
+      </tr>
+    `).join("");
+  });
+</script>
+
+<script src="portal.js"></script>
+</body>
+</html>

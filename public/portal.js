@@ -1,37 +1,83 @@
-// Load logged in student
+function go(page) {
+  window.location.href = page;
+}
+
+function logout() {
+  localStorage.removeItem("student");
+  window.location.href = "login.html";
+}
+
 const student = JSON.parse(localStorage.getItem("student"));
 document.getElementById("studentName").innerText = student.name;
 
-// TEMP course data (later we will fetch from MongoDB)
+// Full courses with availability
 const courses = [
-  {
-    code: "CS101",
-    title: "Intro to Computer Science",
-    instructor: "Dr. Smith",
-    schedule: "Mon/Wed 10:00 - 11:30",
-    credits: 3,
-    seats: 40
-  },
-  {
-    code: "MATH205",
-    title: "Calculus II",
-    instructor: "Prof. Johnson",
-    schedule: "Tue/Thu 11:00 - 12:30",
-    credits: 4,
-    seats: 25
-  }
+  { code:"CS101", title:"Intro to Programming", instructor:"Dr. Smith", credits:3, seats:30 },
+  { code:"CS201", title:"Data Structures", instructor:"Prof. Lee", credits:4, seats:25 },
+  { code:"CS305", title:"Operating Systems", instructor:"Dr. Patel", credits:3, seats:20 },
+  { code:"CS310", title:"DBMS", instructor:"Dr. Reddy", credits:4, seats:35 },
+  { code:"MA202", title:"Discrete Mathematics", instructor:"Prof. Das", credits:4, seats:40 }
 ];
 
-// Load into table
-document.getElementById("courseList").innerHTML =
-  courses.map(c => `
-    <tr>
-      <td>${c.code}</td>
-      <td>${c.title}</td>
-      <td>${c.instructor}</td>
-      <td>${c.schedule}</td>
-      <td>${c.credits}</td>
-      <td>${c.seats} seats</td>
-      <td><button class="action-btn">Register</button></td>
-    </tr>
-  `).join("");
+// Check registered courses on load
+async function loadRegistered() {
+  const res = await fetch("/my-courses", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email: student.email })
+  });
+
+  const registered = await res.json();
+
+  // Update Registered Courses Count on dashboard
+  document.getElementById("regCount").innerText = registered.length;
+
+  // Show course list and disable already registered
+  document.getElementById("courseList").innerHTML = courses.map((c, i) => {
+    const already = registered.find(r => r.code === c.code);
+
+    return `
+      <tr>
+        <td>${c.code}</td>
+        <td>${c.title}</td>
+        <td>${c.instructor}</td>
+        <td>${c.credits}</td>
+        <td>${c.seats} seats</td>
+        <td>
+          <button 
+            class="action-btn"
+            style="background:${already ? 'gray' : '#1b3b7a'};"
+            ${already ? 'disabled' : `onclick="registerCourse(${i})"`}
+          >
+            ${already ? 'Registered' : 'Register'}
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join("");
+}
+
+loadRegistered();
+
+// Register course
+async function registerCourse(index) {
+  const course = courses[index];
+
+  const res = await fetch("/register-course", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email: student.email, course })
+  });
+
+  const data = await res.json();
+
+  if (data.error) {
+    alert(data.error);
+    return;
+  }
+
+  alert("Course Registered Successfully!");
+
+  // Reload table and registered count
+  loadRegistered();
+}

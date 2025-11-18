@@ -1,44 +1,56 @@
-body {
-  background: #e9e9e9;
-  font-family: Arial;
+body.bg {
+  background: linear-gradient(120deg, #1b3b7a, #2979ff);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .box {
-  width: 350px;
-  margin: 80px auto;
+  width: 380px;
   background: white;
-  padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px gray;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 0px 12px rgba(0,0,0,0.3);
 }
 
-.box h2 {
-  text-align: center;
-}
-
-input {
+.box input {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin: 8px 0;
-  border-radius: 5px;
-  border: 1px solid gray;
+  border-radius: 6px;
+  border: 1px solid #999;
 }
 
 button {
   width: 100%;
-  padding: 10px;
-  background: #3b7ddd;
-  color: white;
+  padding: 12px;
+  background: #1b3b7a;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  border-radius: 6px;
+  color: white;
+  font-size: 16px;
 }
 
-.dash {
-  width: 500px;
-  margin: 30px auto;
-  background: white;
-  padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px gray;
+.uni {
+  text-align: center;
+  font-size: 18px;
+  color: #1b3b7a;
+}
+
+/* ICON FIELDS */
+.input-group {
+  position: relative;
+}
+
+.input-group i {
+  position: absolute;
+  left: 10px;
+  top: 13px;
+  font-size: 18px;
+  color: #1b3b7a;
+}
+
+.input-group input {
+  padding-left: 35px !important;
 }
