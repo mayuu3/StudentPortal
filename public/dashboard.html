@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="dash">
+  <h1>Welcome, <span id="studentName"></span></h1>
+
+  <h3>Your Profile</h3>
+  <p>Email: <span id="studentEmail"></span></p>
+  <p>Phone: <span id="studentPhone"></span></p>
+
+  <button onclick="logout()">Logout</button>
+</div>
+
+<script>
+  const student = JSON.parse(localStorage.getItem("student"));
+
+  if (!student) window.location.href = "login.html";
+
+  document.getElementById("studentName").innerText = student.name;
+  document.getElementById("studentEmail").innerText = student.email;
+  document.getElementById("studentPhone").innerText = student.phone;
+
+  function logout() {
+    localStorage.removeItem("student");
+    window.location.href = "login.html";
+  }
+</script>
+
+</body>
+</html>

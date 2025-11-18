@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>University Portal</title>
+  <link rel="stylesheet" href="portal.css">
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h2>University Portal</h2>
+    <ul>
+      <li class="active">Dashboard</li>
+      <li>Courses</li>
+      <li>My Courses</li>
+      <li>Schedule</li>
+      <li>Grades</li>
+      <li>Settings</li>
+    </ul>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+    <div class="topbar">
+      <input type="text" class="search" placeholder="Search for...">
+      <div class="user-profile">👤</div>
+    </div>
+
+    <h2>Welcome back, <span id="studentName"></span></h2>
+
+    <div class="cards">
+      <div class="card">Registered Courses <h3 id="regCount">0</h3></div>
+      <div class="card">Total Credits <h3 id="credits">0</h3></div>
+      <div class="card">Enrollment Progress <h3 id="progress">0%</h3></div>
+      <div class="card">Upcoming Classes <h3 id="upcoming">0</h3></div>
+    </div>
+
+    <h3>Available Courses</h3>
+
+    <table class="courses">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Title</th>
+          <th>Instructor</th>
+          <th>Schedule</th>
+          <th>Credits</th>
+          <th>Availability</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="courseList">
+        <!-- Dynamic Data -->
+      </tbody>
+    </table>
+
+  </div>
+
+</div>
+
+<script src="portal.js"></script>
+</body>
+</html>
