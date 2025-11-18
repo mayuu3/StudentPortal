@@ -11,15 +11,12 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cors());
-
-// Serve static public folder
 app.use(express.static("public"));
 
-// Fix __dirname for ES modules (Render needs this)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Serve login on root "/"
+// Serve login page on root
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "login.html"));
 });
@@ -46,21 +43,22 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log("Mongo Error:", err));
 
-// REGISTER
+// Register
 app.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
 
-  try {
-    const hashed = await bcrypt.hash(password, 10);
-    await Student.create({ name, email, password: hashed });
+  const hashed = await bcrypt.hash(password, 10);
 
-    res.json({ message: "Registered Successfully" });
-  } catch (err) {
-    res.json({ error: "Error Registering" });
-  }
+  await Student.create({
+    name,
+    email,
+    password: hashed
+  });
+
+  res.json({ message: "Registered Successfully" });
 });
 
-// LOGIN
+// Login
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -73,7 +71,7 @@ app.post("/login", async (req, res) => {
   res.json({ message: "Login Success", student });
 });
 
-// REGISTER COURSE
+// Register Course
 app.post("/register-course", async (req, res) => {
   const { email, course } = req.body;
 
@@ -81,7 +79,7 @@ app.post("/register-course", async (req, res) => {
   if (!student) return res.json({ error: "Student not found" });
 
   const exists = student.courses.find(c => c.code === course.code);
-  if (exists) return res.json({ error: "Already Registered" });
+  if (exists) return res.json({ error: "Already registered" });
 
   student.courses.push(course);
   await student.save();
@@ -89,15 +87,12 @@ app.post("/register-course", async (req, res) => {
   res.json({ message: "Course Registered", courses: student.courses });
 });
 
-// GET MY COURSES
+// Get My Courses
 app.post("/my-courses", async (req, res) => {
   const { email } = req.body;
-
   const student = await Student.findOne({ email });
   res.json(student.courses);
 });
 
-// Render uses PORT from environment
 const PORT = process.env.PORT || 3000;
-
 app.listen(PORT, () => console.log("Server Running on", PORT));
